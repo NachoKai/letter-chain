@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { isValidSpanishWord } from "@/lib/dictionary/spanish";
+import { isValidWord } from "@/lib/utils";
 
 const GAME_DURATION = 60;
 const MAX_REASONABLE_SCORE = 10000; // Reasonable max for 60 seconds
@@ -21,8 +21,8 @@ function validateWordChain(words: string[]): boolean {
   for (let i = 0; i < words.length; i++) {
     const word = words[i].toLowerCase();
 
-    // Check if word is valid Spanish
-    if (!isValidSpanishWord(word)) {
+    // Check if word is valid
+    if (!isValidWord(word)) {
       return false;
     }
 

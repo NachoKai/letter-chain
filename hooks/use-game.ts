@@ -2,11 +2,8 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import type { GameState } from "@/lib/game/types";
-import {
-  isValidSpanishWord,
-  getRandomStartingWord,
-} from "@/lib/dictionary/spanish";
 import { calculateWordScore } from "@/lib/game/scoring";
+import { getRandomStartingWord, isValidWord } from "@/lib/utils";
 
 const GAME_DURATION = 60; // 60 seconds
 
@@ -92,12 +89,11 @@ export function useGame() {
       return;
     }
 
-    if (!isValidSpanishWord(word)) {
+    if (!isValidWord(word)) {
       setError("Palabra no válida en español");
       return;
     }
 
-    // Word is valid!
     const newChainLength = gameState.chainLength + 1;
     const wordScore = calculateWordScore(word, newChainLength);
 
