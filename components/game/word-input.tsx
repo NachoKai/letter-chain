@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react"
+import React from "react";
 
 import { useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
@@ -71,7 +71,9 @@ export function WordInput({
         </Button>
       </div>
       {error && (
-        <p className="text-sm text-destructive text-center animate-shake">{error}</p>
+        <p className="text-sm text-destructive text-center animate-shake">
+          {error}
+        </p>
       )}
     </div>
   );

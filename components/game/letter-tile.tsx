@@ -9,11 +9,11 @@ interface LetterTileProps {
   animate?: boolean;
 }
 
-export function LetterTile({ 
-  letter, 
+export function LetterTile({
+  letter,
   variant = "default",
   size = "md",
-  animate = false 
+  animate = false,
 }: LetterTileProps) {
   return (
     <div
@@ -23,7 +23,8 @@ export function LetterTile({
         {
           // Variants
           "bg-card text-card-foreground border-border": variant === "default",
-          "bg-primary text-primary-foreground border-primary": variant === "highlight",
+          "bg-primary text-primary-foreground border-primary":
+            variant === "highlight",
           "bg-muted text-muted-foreground border-muted": variant === "muted",
           // Sizes
           "w-8 h-8 text-sm": size === "sm",

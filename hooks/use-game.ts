@@ -2,7 +2,10 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import type { GameState } from "@/lib/game/types";
-import { isValidSpanishWord, getRandomStartingWord } from "@/lib/dictionary/spanish";
+import {
+  isValidSpanishWord,
+  getRandomStartingWord,
+} from "@/lib/dictionary/spanish";
 import { calculateWordScore } from "@/lib/game/scoring";
 
 const GAME_DURATION = 60; // 60 seconds
@@ -33,7 +36,7 @@ export function useGame() {
   const startGame = useCallback(async () => {
     const sessionToken = generateSessionToken();
     const startingWord = getRandomStartingWord();
-    
+
     // Create session on server
     try {
       await fetch("/api/game/start", {
@@ -65,7 +68,7 @@ export function useGame() {
     if (gameState.status !== "playing" || isSubmitting) return;
 
     const word = inputValue.toLowerCase().trim();
-    
+
     // Validation
     if (!word) {
       setError("Escribe una palabra");
@@ -78,7 +81,9 @@ export function useGame() {
     }
 
     if (!word.startsWith(gameState.lastLetter)) {
-      setError(`La palabra debe empezar con "${gameState.lastLetter.toUpperCase()}"`);
+      setError(
+        `La palabra debe empezar con "${gameState.lastLetter.toUpperCase()}"`
+      );
       return;
     }
 
@@ -95,7 +100,7 @@ export function useGame() {
     // Word is valid!
     const newChainLength = gameState.chainLength + 1;
     const wordScore = calculateWordScore(word, newChainLength);
-    
+
     setGameState((prev) => ({
       ...prev,
       currentWord: word,
@@ -116,7 +121,7 @@ export function useGame() {
       ...prev,
       status: "finished",
     }));
-    
+
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;

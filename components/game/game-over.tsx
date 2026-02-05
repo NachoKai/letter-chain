@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react"
+import React from "react";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,11 @@ interface GameOverProps {
   onSubmitScore: (playerName: string) => Promise<void>;
 }
 
-export function GameOver({ gameState, onPlayAgain, onSubmitScore }: GameOverProps) {
+export function GameOver({
+  gameState,
+  onPlayAgain,
+  onSubmitScore,
+}: GameOverProps) {
   const [playerName, setPlayerName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -42,28 +46,39 @@ export function GameOver({ gameState, onPlayAgain, onSubmitScore }: GameOverProp
     <div className="flex flex-col items-center gap-8 w-full max-w-md mx-auto text-center">
       <div>
         <h2 className="text-3xl font-bold mb-2">Fin del Juego</h2>
-        <p className="text-muted-foreground">Has formado una cadena de palabras</p>
+        <p className="text-muted-foreground">
+          Has formado una cadena de palabras
+        </p>
       </div>
 
       <div className="grid grid-cols-3 gap-6 w-full">
         <div className="bg-card rounded-xl p-4 border">
           <div className="text-sm text-muted-foreground mb-1">Puntuación</div>
-          <div className="text-2xl font-bold font-mono">{formatScore(gameState.score)}</div>
+          <div className="text-2xl font-bold font-mono">
+            {formatScore(gameState.score)}
+          </div>
         </div>
         <div className="bg-card rounded-xl p-4 border">
           <div className="text-sm text-muted-foreground mb-1">Palabras</div>
-          <div className="text-2xl font-bold font-mono">{gameState.words.length}</div>
+          <div className="text-2xl font-bold font-mono">
+            {gameState.words.length}
+          </div>
         </div>
         <div className="bg-card rounded-xl p-4 border">
           <div className="text-sm text-muted-foreground mb-1">Mejor Cadena</div>
-          <div className="text-2xl font-bold font-mono">{gameState.longestChain}</div>
+          <div className="text-2xl font-bold font-mono">
+            {gameState.longestChain}
+          </div>
         </div>
       </div>
 
       {!submitted ? (
         <form onSubmit={handleSubmit} className="w-full space-y-4">
           <div>
-            <label htmlFor="playerName" className="text-sm text-muted-foreground block mb-2">
+            <label
+              htmlFor="playerName"
+              className="text-sm text-muted-foreground block mb-2"
+            >
               Guarda tu puntuación en la tabla
             </label>
             <Input
@@ -99,7 +114,9 @@ export function GameOver({ gameState, onPlayAgain, onSubmitScore }: GameOverProp
         </form>
       ) : (
         <div className="w-full space-y-4">
-          <p className="text-success font-medium">Puntuación guardada correctamente</p>
+          <p className="text-success font-medium">
+            Puntuación guardada correctamente
+          </p>
           <Button onClick={onPlayAgain} className="w-full">
             Jugar de nuevo
           </Button>

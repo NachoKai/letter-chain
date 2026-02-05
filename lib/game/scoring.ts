@@ -8,11 +8,14 @@ export function calculateWordScore(word: string, chainLength: number): number {
   const basePoints = 10;
   const lengthBonus = Math.max(0, word.length - 3) * 2;
   const chainBonus = chainLength * 5;
-  
+
   return basePoints + lengthBonus + chainBonus;
 }
 
-export function calculateTimeBonus(timeRemaining: number, totalTime: number): number {
+export function calculateTimeBonus(
+  timeRemaining: number,
+  totalTime: number
+): number {
   // Give bonus points if they're in the first half of the game (playing quickly)
   const halfTime = totalTime / 2;
   if (timeRemaining > halfTime) {
@@ -28,5 +31,5 @@ export function formatScore(score: number): string {
 export function formatTime(seconds: number): string {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
 }

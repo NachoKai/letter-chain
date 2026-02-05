@@ -1,5 +1,5 @@
 export interface GameState {
-  status: 'idle' | 'playing' | 'finished';
+  status: "idle" | "playing" | "finished";
   currentWord: string;
   lastLetter: string;
   words: string[];

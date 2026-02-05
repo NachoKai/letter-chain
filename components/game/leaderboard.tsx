@@ -22,13 +22,12 @@ export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
   if (isLoading) {
     return (
       <div className={cn("w-full", className)}>
-        <h3 className="text-lg font-semibold mb-4 text-center">Tabla de Líderes</h3>
+        <h3 className="text-lg font-semibold mb-4 text-center">
+          Tabla de Líderes
+        </h3>
         <div className="space-y-2">
           {Array.from({ length: 5 }).map((_, i) => (
-            <div
-              key={i}
-              className="h-12 bg-muted rounded-lg animate-pulse"
-            />
+            <div key={i} className="h-12 bg-muted rounded-lg animate-pulse" />
           ))}
         </div>
       </div>
@@ -39,7 +38,9 @@ export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
     return (
       <div className={cn("w-full text-center", className)}>
         <h3 className="text-lg font-semibold mb-4">Tabla de Líderes</h3>
-        <p className="text-muted-foreground text-sm">Error al cargar la tabla</p>
+        <p className="text-muted-foreground text-sm">
+          Error al cargar la tabla
+        </p>
       </div>
     );
   }
@@ -48,7 +49,9 @@ export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
 
   return (
     <div className={cn("w-full", className)}>
-      <h3 className="text-lg font-semibold mb-4 text-center">Tabla de Líderes</h3>
+      <h3 className="text-lg font-semibold mb-4 text-center">
+        Tabla de Líderes
+      </h3>
       {entries.length === 0 ? (
         <p className="text-muted-foreground text-sm text-center">
           Sin puntuaciones todavía. ¡Sé el primero!

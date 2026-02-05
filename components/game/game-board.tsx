@@ -51,9 +51,12 @@ export function GameBoard() {
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-start justify-center w-full max-w-5xl mx-auto px-4">
         <div className="flex flex-col items-center gap-8 flex-1">
           <div className="text-center space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">LetterChain</h1>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+              LetterChain
+            </h1>
             <p className="text-lg text-muted-foreground max-w-md">
-              Forma una cadena de palabras en español. Cada palabra debe empezar con la última letra de la anterior.
+              Forma una cadena de palabras en español. Cada palabra debe empezar
+              con la última letra de la anterior.
             </p>
           </div>
 
@@ -74,7 +77,9 @@ export function GameBoard() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-primary font-bold">4.</span>
-                <span>Palabras más largas y cadenas más largas dan más puntos</span>
+                <span>
+                  Palabras más largas y cadenas más largas dan más puntos
+                </span>
               </li>
             </ul>
           </div>
@@ -113,7 +118,7 @@ export function GameBoard() {
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-2xl mx-auto px-4">
       <Timer timeRemaining={gameState.timeRemaining} />
-      
+
       <ScoreDisplay
         score={gameState.score}
         wordsCount={gameState.words.length}
@@ -121,7 +126,9 @@ export function GameBoard() {
       />
 
       <div className="py-4">
-        <div className="text-sm text-muted-foreground text-center mb-2">Palabra actual</div>
+        <div className="text-sm text-muted-foreground text-center mb-2">
+          Palabra actual
+        </div>
         <WordDisplay word={gameState.currentWord} highlightLast />
       </div>
 

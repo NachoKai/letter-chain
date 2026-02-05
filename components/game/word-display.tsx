@@ -9,16 +9,24 @@ interface WordDisplayProps {
   className?: string;
 }
 
-export function WordDisplay({ word, highlightLast = true, className }: WordDisplayProps) {
+export function WordDisplay({
+  word,
+  highlightLast = true,
+  className,
+}: WordDisplayProps) {
   const letters = word.split("");
-  
+
   return (
     <div className={cn("flex items-center justify-center gap-1", className)}>
       {letters.map((letter, index) => (
         <LetterTile
           key={`${letter}-${index}`}
           letter={letter}
-          variant={highlightLast && index === letters.length - 1 ? "highlight" : "default"}
+          variant={
+            highlightLast && index === letters.length - 1
+              ? "highlight"
+              : "default"
+          }
           size="lg"
         />
       ))}

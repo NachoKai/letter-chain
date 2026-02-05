@@ -20,7 +20,7 @@ function validateWordChain(words: string[]): boolean {
 
   for (let i = 0; i < words.length; i++) {
     const word = words[i].toLowerCase();
-    
+
     // Check if word is valid Spanish
     if (!isValidSpanishWord(word)) {
       return false;
@@ -37,7 +37,7 @@ function validateWordChain(words: string[]): boolean {
   }
 
   // Check for duplicates
-  const uniqueWords = new Set(words.map(w => w.toLowerCase()));
+  const uniqueWords = new Set(words.map((w) => w.toLowerCase()));
   if (uniqueWords.size !== words.length) {
     return false;
   }
@@ -61,7 +61,8 @@ function calculateExpectedScore(words: string[]): number {
 export async function POST(request: Request) {
   try {
     const payload: SubmitPayload = await request.json();
-    const { playerName, score, wordsCount, longestChain, sessionToken, words } = payload;
+    const { playerName, score, wordsCount, longestChain, sessionToken, words } =
+      payload;
 
     // Basic validation
     if (!playerName || !sessionToken || !words || !Array.isArray(words)) {
@@ -105,10 +106,7 @@ export async function POST(request: Request) {
     }
 
     if (score > MAX_REASONABLE_SCORE) {
-      return NextResponse.json(
-        { error: "Score too high" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Score too high" }, { status: 400 });
     }
 
     const supabase = await createClient();
@@ -137,12 +135,9 @@ export async function POST(request: Request) {
       const startedAt = new Date(session.started_at).getTime();
       const now = Date.now();
       const maxDuration = (GAME_DURATION + 10) * 1000; // 10 second buffer
-      
+
       if (now - startedAt > maxDuration) {
-        return NextResponse.json(
-          { error: "Session expired" },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: "Session expired" }, { status: 400 });
       }
 
       // Mark session as validated
