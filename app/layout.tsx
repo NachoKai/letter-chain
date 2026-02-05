@@ -33,7 +33,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${inter.variable} ${spaceMono.variable}`}>
+    <html
+      data-lt-installed="true"
+      lang="es"
+      className={`${inter.variable} ${spaceMono.variable}`}
+    >
       <body className="font-sans antialiased min-h-screen bg-background text-foreground">
         {children}
       </body>
