@@ -55,6 +55,7 @@ export default [
         process: "readonly",
         require: "readonly",
         Math: "readonly",
+        URL: "readonly",
       },
     },
     plugins: {
