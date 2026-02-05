@@ -7,6 +7,7 @@ interface LetterTileProps {
   variant?: "default" | "highlight" | "muted";
   size?: "sm" | "md" | "lg";
   animate?: boolean;
+  className?: string;
 }
 
 export function LetterTile({
@@ -14,6 +15,7 @@ export function LetterTile({
   variant = "default",
   size = "md",
   animate = false,
+  className,
 }: LetterTileProps) {
   return (
     <div
@@ -32,7 +34,8 @@ export function LetterTile({
           "w-16 h-16 text-3xl": size === "lg",
           // Animation
           "animate-bounce": animate,
-        }
+        },
+        className
       )}
     >
       {letter}

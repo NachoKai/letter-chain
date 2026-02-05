@@ -17,7 +17,12 @@ export function WordDisplay({
   const letters = word.split("");
 
   return (
-    <div className={cn("flex items-center justify-center gap-1", className)}>
+    <div
+      className={cn(
+        "flex items-center justify-center gap-1 flex-wrap max-w-full",
+        className
+      )}
+    >
       {letters.map((letter, index) => (
         <LetterTile
           key={`${letter}-${index}`}
@@ -28,6 +33,7 @@ export function WordDisplay({
               : "default"
           }
           size="lg"
+          className="flex-shrink-0"
         />
       ))}
     </div>

@@ -45,7 +45,6 @@ export function GameBoard() {
     [gameState]
   );
 
-  // Idle state - show start screen
   if (gameState.status === "idle") {
     return (
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-start justify-center w-full max-w-5xl mx-auto px-4">
@@ -125,11 +124,15 @@ export function GameBoard() {
         chainLength={gameState.chainLength}
       />
 
-      <div className="py-4">
+      <div className="py-4 w-full">
         <div className="text-sm text-muted-foreground text-center mb-2">
           Palabra actual
         </div>
-        <WordDisplay word={gameState.currentWord} highlightLast />
+        <WordDisplay
+          word={gameState.currentWord}
+          highlightLast
+          className="max-w-full overflow-x-auto"
+        />
       </div>
 
       <WordInput
