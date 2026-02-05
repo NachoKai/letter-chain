@@ -34,9 +34,9 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      data-lt-installed="true"
       lang="es"
       className={`${inter.variable} ${spaceMono.variable}`}
+      suppressHydrationWarning
     >
       <body className="font-sans antialiased min-h-screen bg-background text-foreground">
         {children}
