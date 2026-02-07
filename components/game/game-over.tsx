@@ -5,13 +5,17 @@ import React from "react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  CountrySelector,
+  type Country,
+} from "@/components/ui/country-selector";
 import { formatScore } from "@/lib/game/scoring";
 import type { GameState } from "@/lib/game/types";
 
 interface GameOverProps {
   gameState: GameState;
   onPlayAgain: () => void;
-  onSubmitScore: (playerName: string) => Promise<void>;
+  onSubmitScore: (playerName: string, country?: Country) => Promise<void>;
 }
 
 export function GameOver({
@@ -20,6 +24,7 @@ export function GameOver({
   onSubmitScore,
 }: GameOverProps) {
   const [playerName, setPlayerName] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState<Country | undefined>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +37,7 @@ export function GameOver({
     setError(null);
 
     try {
-      await onSubmitScore(playerName.trim());
+      await onSubmitScore(playerName.trim(), selectedCountry);
       setSubmitted(true);
     } catch (err) {
       setError("Error al guardar puntuación. Intenta de nuevo.");
@@ -88,7 +93,13 @@ export function GameOver({
               onChange={(e) => setPlayerName(e.target.value)}
               placeholder="Tu nombre..."
               maxLength={20}
-              className="text-center"
+              className="text-center mb-3"
+              disabled={isSubmitting}
+            />
+            <CountrySelector
+              value={selectedCountry?.code}
+              onValueChange={setSelectedCountry}
+              placeholder="Selecciona tu país (opcional)"
               disabled={isSubmitting}
             />
           </div>

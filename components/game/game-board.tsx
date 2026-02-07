@@ -11,6 +11,7 @@ import { WordInput } from "./word-input";
 import { WordHistory } from "./word-history";
 import { GameOver } from "./game-over";
 import { Leaderboard } from "./leaderboard";
+import { type Country } from "@/components/ui/country-selector";
 
 export function GameBoard() {
   const {
@@ -26,12 +27,15 @@ export function GameBoard() {
   const showHomeButton = gameState.status === "playing";
 
   const handleSubmitScore = useCallback(
-    async (playerName: string) => {
+    async (playerName: string, country?: Country) => {
       const response = await fetch("/api/game/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           playerName,
+          countryCode: country?.code,
+          countryName: country?.name,
+          countryFlag: country?.flag,
           score: gameState.score,
           wordsCount: gameState.words.length,
           longestChain: gameState.longestChain,

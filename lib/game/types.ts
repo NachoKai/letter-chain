@@ -13,6 +13,9 @@ export interface GameState {
 export interface LeaderboardEntry {
   id: string;
   player_name: string;
+  country_code?: string;
+  country_name?: string;
+  country_flag?: string;
   score: number;
   words_count: number;
   longest_chain: number;
@@ -34,6 +37,9 @@ export interface GameSession {
 
 export interface SubmitScorePayload {
   playerName: string;
+  countryCode?: string;
+  countryName?: string;
+  countryFlag?: string;
   score: number;
   wordsCount: number;
   longestChain: number;

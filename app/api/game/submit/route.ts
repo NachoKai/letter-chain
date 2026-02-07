@@ -7,6 +7,9 @@ const MAX_REASONABLE_SCORE = 10000; // Reasonable max for 60 seconds
 
 interface SubmitPayload {
   playerName: string;
+  countryCode?: string;
+  countryName?: string;
+  countryFlag?: string;
   score: number;
   wordsCount: number;
   longestChain: number;
@@ -14,19 +17,16 @@ interface SubmitPayload {
   words: string[];
 }
 
-// Validate the word chain
 function validateWordChain(words: string[]): boolean {
   if (words.length < 1) return false;
 
   for (let i = 0; i < words.length; i++) {
     const word = words[i].toLowerCase();
 
-    // Check if word is valid
     if (!isValidWord(word)) {
       return false;
     }
 
-    // Check chain rule (except for first word)
     if (i > 0) {
       const previousWord = words[i - 1].toLowerCase();
       const lastLetter = previousWord.slice(-1);
@@ -36,7 +36,6 @@ function validateWordChain(words: string[]): boolean {
     }
   }
 
-  // Check for duplicates
   const uniqueWords = new Set(words.map((w) => w.toLowerCase()));
   if (uniqueWords.size !== words.length) {
     return false;
@@ -45,7 +44,6 @@ function validateWordChain(words: string[]): boolean {
   return true;
 }
 
-// Calculate expected score from words
 function calculateExpectedScore(words: string[]): number {
   let score = 0;
   for (let i = 0; i < words.length; i++) {
@@ -61,8 +59,17 @@ function calculateExpectedScore(words: string[]): number {
 export async function POST(request: Request) {
   try {
     const payload: SubmitPayload = await request.json();
-    const { playerName, score, wordsCount, longestChain, sessionToken, words } =
-      payload;
+    const {
+      playerName,
+      countryCode,
+      countryName,
+      countryFlag,
+      score,
+      wordsCount,
+      longestChain,
+      sessionToken,
+      words,
+    } = payload;
 
     // Basic validation
     if (!playerName || !sessionToken || !words || !Array.isArray(words)) {
@@ -157,6 +164,9 @@ export async function POST(request: Request) {
       .from("leaderboard")
       .insert({
         player_name: playerName.trim().substring(0, 20),
+        country_code: countryCode,
+        country_name: countryName,
+        country_flag: countryFlag,
         score,
         words_count: wordsCount,
         longest_chain: longestChain,

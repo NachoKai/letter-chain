@@ -81,7 +81,14 @@ export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
                 {index + 1}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-medium truncate">{entry.player_name}</div>
+                <div className="flex items-center gap-2">
+                  {entry.country_flag && (
+                    <span className="text-lg">{entry.country_flag}</span>
+                  )}
+                  <div className="font-medium truncate">
+                    {entry.player_name}
+                  </div>
+                </div>
                 <div className="text-xs text-muted-foreground">
                   {entry.words_count} palabras · cadena de {entry.longest_chain}
                 </div>
