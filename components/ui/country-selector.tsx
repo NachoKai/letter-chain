@@ -65,7 +65,6 @@ const countries: Country[] = [
   { code: "CO", name: "Colombia" },
   { code: "KM", name: "Comoras" },
   { code: "CG", name: "Congo" },
-
   { code: "KP", name: "Corea del Norte" },
   { code: "KR", name: "Corea del Sur" },
   { code: "CI", name: "Costa de Marfil" },
