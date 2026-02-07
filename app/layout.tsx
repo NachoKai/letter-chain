@@ -1,7 +1,6 @@
 import React from "react";
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Mono } from "next/font/google";
-
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -47,10 +46,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          {children}
           <div className="fixed top-4 right-4 z-50">
             <ThemeToggle />
           </div>
-          {children}
         </ThemeProvider>
       </body>
     </html>
