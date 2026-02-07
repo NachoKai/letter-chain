@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { cn } from "@/lib/utils";
 import { formatScore } from "@/lib/game/scoring";
 import type { LeaderboardEntry } from "@/lib/game/types";
+import ReactCountryFlag from "react-country-flag";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -82,8 +83,16 @@ export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  {entry.country_flag && (
-                    <span className="text-lg">{entry.country_flag}</span>
+                  {entry.country_code && (
+                    <ReactCountryFlag
+                      countryCode={entry.country_code}
+                      svg
+                      style={{
+                        width: "1.2em",
+                        height: "1.2em",
+                      }}
+                      title={entry.country_name || entry.country_code}
+                    />
                   )}
                   <div className="font-medium truncate">
                     {entry.player_name}
