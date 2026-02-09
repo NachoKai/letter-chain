@@ -13,6 +13,7 @@ import ReactCountryFlag from "react-country-flag";
 export interface Country {
   code: string;
   name: string;
+  flag?: string;
 }
 
 const countries: Country[] = [
