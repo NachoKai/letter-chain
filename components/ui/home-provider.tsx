@@ -21,7 +21,7 @@ export function HomeProvider({
 }) {
   return (
     <HomeContext.Provider value={{ showHomeButton, onHomeClick }}>
-      <div className="relative min-h-screen">
+      <div className="relative">
         <div className="fixed top-4 left-4 z-50">
           <HomeButton show={showHomeButton} onHome={onHomeClick} />
         </div>
