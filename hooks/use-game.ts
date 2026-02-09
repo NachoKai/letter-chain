@@ -8,7 +8,23 @@ import { getRandomStartingWord, isValidWord } from "@/lib/utils";
 const GAME_DURATION = 60; // 60 seconds
 
 function generateSessionToken(): string {
-  return `${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
+  if (
+    typeof window !== "undefined" &&
+    window.crypto &&
+    window.crypto.getRandomValues
+  ) {
+    const array = new Uint8Array(32);
+    window.crypto.getRandomValues(array);
+    return Array.from(array, (byte) => byte.toString(16).padStart(2, "0")).join(
+      ""
+    );
+  }
+
+  return Array.from({ length: 32 }, () =>
+    Math.floor(Math.random() * 256)
+      .toString(16)
+      .padStart(2, "0")
+  ).join("");
 }
 
 export function useGame() {
@@ -29,12 +45,10 @@ export function useGame() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Start a new game
   const startGame = useCallback(async () => {
     const sessionToken = generateSessionToken();
     const startingWord = getRandomStartingWord();
 
-    // Create session on server
     try {
       await fetch("/api/game/start", {
         method: "POST",
@@ -60,13 +74,11 @@ export function useGame() {
     setError(null);
   }, []);
 
-  // Submit a word
   const submitWord = useCallback(() => {
     if (gameState.status !== "playing" || isSubmitting) return;
 
     const word = inputValue.toLowerCase().trim();
 
-    // Validation
     if (!word) {
       setError("Escribe una palabra");
       return;
@@ -111,7 +123,6 @@ export function useGame() {
     setError(null);
   }, [gameState, inputValue, isSubmitting]);
 
-  // End the game
   const endGame = useCallback(() => {
     setGameState((prev) => ({
       ...prev,
@@ -124,7 +135,6 @@ export function useGame() {
     }
   }, []);
 
-  // Reset game to idle
   const resetGame = useCallback(() => {
     setGameState({
       status: "idle",
@@ -141,7 +151,6 @@ export function useGame() {
     setError(null);
   }, []);
 
-  // Timer effect
   useEffect(() => {
     if (gameState.status === "playing") {
       timerRef.current = setInterval(() => {
@@ -162,7 +171,6 @@ export function useGame() {
     };
   }, [gameState.status]);
 
-  // Check if game ended due to timer
   useEffect(() => {
     if (gameState.status === "playing" && gameState.timeRemaining === 0) {
       endGame();
