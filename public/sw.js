@@ -1,18 +1,17 @@
+/* global self caches */
+
 const CACHE_NAME = "letterchain-v1";
 const STATIC_ASSETS = ["/", "/manifest.json", "/logo.svg"];
 
 // Install event - cache static assets
 self.addEventListener("install", (event) => {
-  console.log("SW: Install event");
   event.waitUntil(
     caches
       .open(CACHE_NAME)
       .then((cache) => {
-        console.log("SW: Caching static assets");
         return cache.addAll(STATIC_ASSETS);
       })
       .then(() => {
-        console.log("SW: Skipping waiting");
         self.skipWaiting();
       })
   );
@@ -20,7 +19,6 @@ self.addEventListener("install", (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener("activate", (event) => {
-  console.log("SW: Activate event");
   event.waitUntil(
     caches
       .keys()
@@ -29,13 +27,11 @@ self.addEventListener("activate", (event) => {
           cacheNames
             .filter((cacheName) => cacheName !== CACHE_NAME)
             .map((cacheName) => {
-              console.log("SW: Deleting old cache", cacheName);
               return caches.delete(cacheName);
             })
         );
       })
       .then(() => {
-        console.log("SW: Claiming clients");
         self.clients.claim();
       })
   );
@@ -64,7 +60,6 @@ self.addEventListener("fetch", (event) => {
     caches.match(request).then((cachedResponse) => {
       // Return cached version if available
       if (cachedResponse) {
-        console.log("SW: Serving from cache", request.url);
         return cachedResponse;
       }
 
@@ -92,12 +87,9 @@ self.addEventListener("fetch", (event) => {
         .catch(() => {
           // If offline and request is for a page, serve the index page
           if (request.destination === "document") {
-            console.log("SW: Offline, serving index page");
             return caches.match("/");
           }
         });
     })
   );
 });
-
-console.log("SW: Service worker loaded");
