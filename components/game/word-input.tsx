@@ -44,7 +44,7 @@ export function WordInput({
   return (
     <div className="w-full max-w-md space-y-2">
       <div className="flex items-center gap-2">
-        <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-primary text-primary-foreground rounded-lg font-mono font-bold text-2xl uppercase">
+        <div className="flex-shrink-0 w-14 h-14 flex items-center justify-center bg-primary text-primary-foreground rounded-lg font-mono font-bold text-2xl uppercase touch-manipulation select-none">
           {requiredLetter}
         </div>
         <Input
@@ -56,18 +56,21 @@ export function WordInput({
           placeholder={`Palabra con "${requiredLetter.toUpperCase()}"...`}
           disabled={disabled}
           className={cn(
-            "h-12 text-lg font-mono uppercase",
+            "h-14 text-lg font-mono uppercase touch-manipulation",
             error && "border-destructive focus-visible:ring-destructive"
           )}
           autoComplete="off"
           autoCapitalize="off"
           autoCorrect="off"
           spellCheck={false}
+          inputMode="text"
+          enterKeyHint="send"
         />
         <Button
           onClick={onSubmit}
           disabled={disabled || !value.trim()}
-          className="h-12 px-6"
+          className="h-14 px-6 min-w-[80px] touch-manipulation"
+          size="lg"
         >
           Enviar
         </Button>

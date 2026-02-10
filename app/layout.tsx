@@ -20,12 +20,37 @@ export const metadata: Metadata = {
   description:
     "A fast-paced word chain game. Type words where each word starts with the last two letters of the previous word!",
   generator: "v0.app",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "LetterChain",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    siteName: "LetterChain",
+    title: "LetterChain - Word Chain Typing Game",
+    description:
+      "A fast-paced word chain game. Type words where each word starts with the last two letters of the previous word!",
+  },
+  twitter: {
+    card: "summary",
+    title: "LetterChain - Word Chain Typing Game",
+    description:
+      "A fast-paced word chain game. Type words where each word starts with the last two letters of the previous word!",
+  },
 };
 
 export const viewport: Viewport = {
   themeColor: "#1a1d23",
   width: "device-width",
   initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -39,7 +64,7 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="font-sans antialiased min-h-screen bg-background text-foreground">
+      <body className="font-sans antialiased min-h-screen bg-background text-foreground touch-manipulation">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -51,6 +76,19 @@ export default function RootLayout({
             <ThemeToggle />
           </div>
         </ThemeProvider>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                  navigator.serviceWorker.register('/sw.js')
+                    .then(registration => console.log('SW registered:', registration))
+                    .catch(error => console.log('SW registration failed:', error));
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );

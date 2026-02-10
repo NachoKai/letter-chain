@@ -86,7 +86,8 @@
     "postcss": "^8.5",
     "prettier": "^3.8.1",
     "tailwindcss": "^3.4.17",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "workbox-webpack-plugin": "^7.4.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

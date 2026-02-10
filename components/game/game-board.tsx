@@ -96,7 +96,11 @@ export function GameBoard() {
               </ul>
             </div>
 
-            <Button onClick={startGame} size="lg" className="text-lg px-8">
+            <Button
+              onClick={startGame}
+              size="lg"
+              className="text-lg px-8 h-14 min-h-[56px] touch-manipulation"
+            >
               Comenzar Juego
             </Button>
           </div>
