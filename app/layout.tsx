@@ -42,6 +42,11 @@ export const metadata: Metadata = {
     description:
       "A fast-paced word chain game. Type words where each word starts with the last two letters of the previous word!",
   },
+  icons: {
+    icon: "/logo.svg",
+    apple: "/logo.svg",
+    shortcut: "/logo.svg",
+  },
 };
 
 export const viewport: Viewport = {

@@ -11,10 +11,10 @@
   "lang": "es",
   "icons": [
     {
-      "src": "/icon-192x192.svg",
-      "sizes": "192x192",
+      "src": "/logo.svg",
+      "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ],
   "categories": ["games", "education"],
@@ -26,7 +26,7 @@
       "url": "/",
       "icons": [
         {
-          "src": "/icon-192x192.svg",
+          "src": "/logo.svg",
           "sizes": "192x192"
         }
       ]

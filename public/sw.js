@@ -1,5 +1,5 @@
 const CACHE_NAME = "letterchain-v1";
-const STATIC_ASSETS = ["/", "/manifest.json", "/icon-192x192.svg"];
+const STATIC_ASSETS = ["/", "/manifest.json", "/logo.svg"];
 
 // Install event - cache static assets
 self.addEventListener("install", (event) => {
