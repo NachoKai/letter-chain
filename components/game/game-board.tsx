@@ -60,7 +60,7 @@ export function GameBoard() {
           <div className="flex flex-col items-center gap-8 flex-1">
             <div className="text-center space-y-4">
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-                LetterChain
+                LetterChain 🔗
               </h1>
               <p className="text-lg text-muted-foreground max-w-md">
                 Forma una cadena de palabras en español. Cada palabra debe
