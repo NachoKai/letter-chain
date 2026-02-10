@@ -21,7 +21,7 @@ export function WordInput({
   value,
   onChange,
   onSubmit,
-  onSurrender,
+  // onSurrender,
   requiredLetter,
   error,
   disabled,
@@ -71,14 +71,14 @@ export function WordInput({
         >
           Enviar
         </Button>
-        <Button
+        {/* <Button
           onClick={onSurrender}
           disabled={disabled}
           variant="outline"
           className="h-12 px-6"
         >
-          Rendirirse
-        </Button>
+          Rendirse
+        </Button> */}
       </div>
       {error && (
         <p className="text-sm text-destructive text-center animate-shake">
