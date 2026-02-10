@@ -28,7 +28,8 @@ export function WordDisplay({
           key={`${letter}-${index}`}
           letter={letter}
           variant={
-            highlightLast && index === letters.length - 1
+            highlightLast &&
+            (index === letters.length - 1 || index === letters.length - 2)
               ? "highlight"
               : "default"
           }

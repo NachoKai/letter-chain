@@ -18,7 +18,7 @@ const spaceMono = Space_Mono({
 export const metadata: Metadata = {
   title: "LetterChain - Word Chain Typing Game",
   description:
-    "A fast-paced word chain game. Type words where each word starts with the last letter of the previous word!",
+    "A fast-paced word chain game. Type words where each word starts with the last two letters of the previous word!",
   generator: "v0.app",
 };
 

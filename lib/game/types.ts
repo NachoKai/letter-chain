@@ -1,7 +1,7 @@
 export interface GameState {
   status: "idle" | "playing" | "finished";
   currentWord: string;
-  lastLetter: string;
+  lastTwoLetters: string;
   words: string[];
   score: number;
   timeRemaining: number;

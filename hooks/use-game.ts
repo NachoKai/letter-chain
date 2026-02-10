@@ -31,7 +31,7 @@ export function useGame() {
   const [gameState, setGameState] = useState<GameState>({
     status: "idle",
     currentWord: "",
-    lastLetter: "",
+    lastTwoLetters: "",
     words: [],
     score: 0,
     timeRemaining: GAME_DURATION,
@@ -62,7 +62,7 @@ export function useGame() {
     setGameState({
       status: "playing",
       currentWord: startingWord,
-      lastLetter: startingWord.slice(-1).toLowerCase(),
+      lastTwoLetters: startingWord.slice(-2).toLowerCase(),
       words: [startingWord],
       score: 10, // Starting word gives 10 points
       timeRemaining: GAME_DURATION,
@@ -89,9 +89,9 @@ export function useGame() {
       return;
     }
 
-    if (!word.startsWith(gameState.lastLetter)) {
+    if (!word.startsWith(gameState.lastTwoLetters)) {
       setError(
-        `La palabra debe empezar con "${gameState.lastLetter.toUpperCase()}"`
+        `La palabra debe empezar con "${gameState.lastTwoLetters.toUpperCase()}"`
       );
       return;
     }
@@ -112,7 +112,7 @@ export function useGame() {
     setGameState((prev) => ({
       ...prev,
       currentWord: word,
-      lastLetter: word.slice(-1).toLowerCase(),
+      lastTwoLetters: word.slice(-2).toLowerCase(),
       words: [...prev.words, word],
       score: prev.score + wordScore,
       chainLength: newChainLength,
@@ -139,7 +139,7 @@ export function useGame() {
     setGameState({
       status: "idle",
       currentWord: "",
-      lastLetter: "",
+      lastTwoLetters: "",
       words: [],
       score: 0,
       timeRemaining: GAME_DURATION,

@@ -37,7 +37,7 @@ export function GameOver({
     let chain = words[0];
     for (let i = 1; i < words.length; i++) {
       const currWord = words[i];
-      chain += currWord.substring(1);
+      chain += currWord.substring(2);
     }
     return chain;
   };

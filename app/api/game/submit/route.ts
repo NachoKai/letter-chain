@@ -40,8 +40,8 @@ function validateWordChain(words: string[]): boolean {
 
     if (i > 0) {
       const previousWord = words[i - 1].toLowerCase();
-      const lastLetter = previousWord.slice(-1);
-      if (!word.startsWith(lastLetter)) {
+      const lastTwoLetters = previousWord.slice(-2);
+      if (!word.startsWith(lastTwoLetters)) {
         return false;
       }
     }

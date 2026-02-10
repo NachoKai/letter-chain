@@ -11,6 +11,7 @@ interface WordInputProps {
   value: string;
   onChange: (value: string) => void;
   onSubmit: () => void;
+  onSurrender: () => void;
   requiredLetter: string;
   error?: string | null;
   disabled?: boolean;
@@ -20,6 +21,7 @@ export function WordInput({
   value,
   onChange,
   onSubmit,
+  onSurrender,
   requiredLetter,
   error,
   disabled,
@@ -68,6 +70,14 @@ export function WordInput({
           className="h-12 px-6"
         >
           Enviar
+        </Button>
+        <Button
+          onClick={onSurrender}
+          disabled={disabled}
+          variant="outline"
+          className="h-12 px-6"
+        >
+          Rendirirse
         </Button>
       </div>
       {error && (

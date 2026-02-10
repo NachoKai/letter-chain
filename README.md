@@ -1,11 +1,11 @@
 # LetterChain
 
-A fast-paced word game where you create chains of words in Spanish. Each word must start with the last letter of the previous word. How long can you keep the chain going?
+A fast-paced word game where you create chains of words in Spanish. Each word must start with the last two letters of the previous word. How long can you keep the chain going?
 
 ## 🎮 How to Play
 
 1. **Start with a word** - You'll be given an initial Spanish word
-2. **Continue the chain** - Type a word that starts with the last letter of the previous word
+2. **Continue the chain** - Type a word that starts with the last two letters of the previous word
 3. **Race against time** - You have 60 seconds to build the longest chain possible
 4. **Score points** - Longer words and longer chains earn more points
 
@@ -108,7 +108,7 @@ letter-chain/
 
 ## 🧩 Game Logic
 
-The game uses a comprehensive Spanish word dictionary to validate submissions. The scoring algorithm rewards:
+The game uses a unique "last two letters" mechanic where each word must start with the final two letters of the previous word, making it more challenging than traditional word chain games. The scoring algorithm rewards:
 
 - Longer words (encouraging vocabulary expansion)
 - Longer chains (rewarding continuity)

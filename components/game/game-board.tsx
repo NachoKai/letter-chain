@@ -21,6 +21,7 @@ export function GameBoard() {
     error,
     startGame,
     submitWord,
+    endGame,
     resetGame,
   } = useGame();
 
@@ -63,7 +64,7 @@ export function GameBoard() {
               </h1>
               <p className="text-lg text-muted-foreground max-w-md">
                 Forma una cadena de palabras en español. Cada palabra debe
-                empezar con la última letra de la anterior.
+                empezar con las últimas dos letras de la anterior.
               </p>
             </div>
 
@@ -77,7 +78,7 @@ export function GameBoard() {
                 <li className="flex items-start gap-2">
                   <span className="text-primary font-bold">2.</span>
                   <span>
-                    Escribe una palabra que empiece con la última letra
+                    Escribe una palabra que empiece con las últimas dos letras
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
@@ -155,7 +156,8 @@ export function GameBoard() {
           value={inputValue}
           onChange={setInputValue}
           onSubmit={submitWord}
-          requiredLetter={gameState.lastLetter}
+          onSurrender={endGame}
+          requiredLetter={gameState.lastTwoLetters}
           error={error}
         />
 
