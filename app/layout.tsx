@@ -69,7 +69,10 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="font-sans antialiased min-h-screen bg-background text-foreground touch-manipulation">
+      <body
+        suppressHydrationWarning
+        className="font-sans antialiased min-h-screen bg-background text-foreground touch-manipulation"
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

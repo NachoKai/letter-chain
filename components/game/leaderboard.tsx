@@ -27,8 +27,39 @@ export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
           Tabla de Líderes
         </h3>
         <div className="space-y-2">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="h-12 bg-muted rounded-lg animate-pulse" />
+          {Array.from({ length: limit }).map((_, i) => (
+            <div
+              key={i}
+              className={cn(
+                "flex items-center gap-3 p-3 rounded-lg transition-colors",
+                i === 0 && "bg-primary/10 border border-primary/20",
+                i === 1 && "bg-secondary",
+                i === 2 && "bg-secondary/50",
+                i > 2 && "bg-card border"
+              )}
+            >
+              <div
+                className={cn(
+                  "w-8 h-8 rounded-full flex items-center justify-center",
+                  i === 0 && "bg-primary/30",
+                  i === 1 && "bg-foreground/30",
+                  i === 2 && "bg-foreground/20",
+                  i > 2 && "bg-muted"
+                )}
+              >
+                <div className="w-3 h-3 bg-muted-foreground/30 rounded animate-pulse" />
+              </div>
+
+              <div className="flex-1 min-w-0 space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <div className="w-[1.2em] h-[1.2em] bg-muted/60 rounded-sm animate-pulse" />
+                  <div className="h-4 bg-muted/60 rounded animate-pulse w-28" />
+                </div>
+                <div className="h-3 bg-muted/40 rounded animate-pulse w-36" />
+              </div>
+
+              <div className="h-6 w-16 bg-muted/60 rounded animate-pulse" />
+            </div>
           ))}
         </div>
       </div>
