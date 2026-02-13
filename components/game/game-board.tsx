@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
 import { useGame } from "@/hooks/use-game";
 import { Button } from "@/components/ui/button";
 import { HomeProvider } from "@/components/ui/home-provider";
@@ -11,7 +10,6 @@ import { WordInput } from "./word-input";
 import { WordHistory } from "./word-history";
 import { GameOver } from "./game-over";
 import { Leaderboard } from "./leaderboard";
-import { type Country } from "@/components/ui/country-selector";
 
 export function GameBoard() {
   const {
@@ -26,32 +24,6 @@ export function GameBoard() {
   } = useGame();
 
   const showHomeButton = gameState.status === "playing";
-
-  const handleSubmitScore = useCallback(
-    async (playerName: string, country?: Country) => {
-      const response = await fetch("/api/game/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          playerName,
-          countryCode: country?.code,
-          countryName: country?.name,
-          countryFlag: country?.flag,
-          score: gameState.score,
-          wordsCount: gameState.words.length,
-          longestChain: gameState.longestChain,
-          sessionToken: gameState.sessionToken,
-          words: gameState.words,
-        }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to submit score");
-      }
-    },
-    [gameState]
-  );
 
   if (gameState.status === "idle") {
     return (
@@ -119,11 +91,7 @@ export function GameBoard() {
       <HomeProvider showHomeButton={showHomeButton} onHomeClick={resetGame}>
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-start justify-center w-full max-w-5xl mx-auto px-4">
           <div className="flex-1">
-            <GameOver
-              gameState={gameState}
-              onPlayAgain={resetGame}
-              onSubmitScore={handleSubmitScore}
-            />
+            <GameOver gameState={gameState} onPlayAgain={resetGame} />
           </div>
           <div className="w-full lg:w-80">
             <Leaderboard />

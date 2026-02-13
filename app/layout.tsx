@@ -4,6 +4,7 @@ import { Inter, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { QueryProvider } from "@/components/query-client-provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -79,7 +80,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <QueryProvider>{children}</QueryProvider>
           <div className="fixed top-4 right-4 z-50">
             <ThemeToggle />
           </div>

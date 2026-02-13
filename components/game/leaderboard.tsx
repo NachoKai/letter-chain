@@ -1,12 +1,9 @@
 "use client";
 
-import useSWR from "swr";
+import { useLeaderboardQuery } from "@/hooks/use-game-queries";
 import { cn } from "@/lib/utils";
 import { formatScore } from "@/lib/game/scoring";
-import type { LeaderboardEntry } from "@/lib/game/types";
 import ReactCountryFlag from "react-country-flag";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 interface LeaderboardProps {
   className?: string;
@@ -14,17 +11,13 @@ interface LeaderboardProps {
 }
 
 export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
-  const { data, error, isLoading } = useSWR<{ entries: LeaderboardEntry[] }>(
-    `/api/leaderboard?limit=${limit}`,
-    fetcher,
-    { refreshInterval: 30000 } // Refresh every 30 seconds
-  );
+  const { data, error, isLoading } = useLeaderboardQuery(limit);
 
   if (isLoading) {
     return (
       <div className={cn("w-full", className)}>
         <h3 className="text-lg font-semibold mb-4 text-center">
-          Tabla de Líderes
+          Tabla de Líderes2
         </h3>
         <div className="space-y-2">
           {Array.from({ length: limit }).map((_, i) => (
@@ -69,7 +62,7 @@ export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
   if (error) {
     return (
       <div className={cn("w-full text-center", className)}>
-        <h3 className="text-lg font-semibold mb-4">Tabla de Líderes</h3>
+        <h3 className="text-lg font-semibold mb-4">Tabla de Líderes3</h3>
         <p className="text-muted-foreground text-sm">
           Error al cargar la tabla
         </p>
@@ -82,7 +75,7 @@ export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
   return (
     <div className={cn("w-full", className)}>
       <h3 className="text-lg font-semibold mb-4 text-center">
-        Tabla de Líderes
+        Tabla de Líderes4
       </h3>
       {entries.length === 0 ? (
         <p className="text-muted-foreground text-sm text-center">

@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
-
 import { useState } from "react";
+import { useSubmitScoreMutation } from "@/hooks/use-game-queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,25 +9,20 @@ import {
   type Country,
 } from "@/components/ui/country-selector";
 import { formatScore } from "@/lib/game/scoring";
-import type { GameState } from "@/lib/game/types";
+import type { GameState, SubmitScorePayload } from "@/lib/game/types";
 
 interface GameOverProps {
   gameState: GameState;
   onPlayAgain: () => void;
-  onSubmitScore: (playerName: string, country?: Country) => Promise<void>;
 }
 
-export function GameOver({
-  gameState,
-  onPlayAgain,
-  onSubmitScore,
-}: GameOverProps) {
+export function GameOver({ gameState, onPlayAgain }: GameOverProps) {
   const [playerName, setPlayerName] = useState("");
   const [selectedCountry, setSelectedCountry] = useState<Country | undefined>();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const { mutateAsync: submitScore, isPending } = useSubmitScoreMutation();
 
   const buildLetterChain = (words: string[]) => {
     if (words.length === 0) return "";
@@ -80,19 +74,32 @@ export function GameOver({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!playerName.trim() || isSubmitting) return;
+    if (!playerName.trim() || isPending) return;
+    if (!gameState.sessionToken) {
+      setError("No hay una sesion valida.");
+      return;
+    }
 
-    setIsSubmitting(true);
     setError(null);
 
     try {
-      await onSubmitScore(playerName.trim(), selectedCountry);
+      const payload: SubmitScorePayload = {
+        playerName: playerName.trim(),
+        countryCode: selectedCountry?.code,
+        countryName: selectedCountry?.name,
+        countryFlag: selectedCountry?.flag,
+        score: gameState.score,
+        wordsCount: gameState.words.length,
+        longestChain: gameState.longestChain,
+        sessionToken: gameState.sessionToken,
+        words: gameState.words,
+      };
+
+      await submitScore(payload);
       setSubmitted(true);
     } catch (err) {
-      setError("Error al guardar puntuación. Intenta de nuevo.");
+      setError("Error al guardar puntuacion. Intenta de nuevo.");
       console.error(err);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -170,13 +177,13 @@ export function GameOver({
               placeholder="Tu nombre..."
               maxLength={20}
               className="text-center mb-3"
-              disabled={isSubmitting}
+              disabled={isPending}
             />
             <CountrySelector
               value={selectedCountry?.code}
               onValueChange={setSelectedCountry}
               placeholder="Selecciona tu país (opcional)"
-              disabled={isSubmitting}
+              disabled={isPending}
             />
           </div>
           {error && <p className="text-sm text-destructive">{error}</p>}
@@ -186,16 +193,16 @@ export function GameOver({
               variant="outline"
               onClick={onPlayAgain}
               className="flex-1 bg-transparent"
-              disabled={isSubmitting}
+              disabled={isPending}
             >
               Jugar de nuevo
             </Button>
             <Button
               type="submit"
               className="flex-1"
-              disabled={!playerName.trim() || isSubmitting}
+              disabled={!playerName.trim() || isPending}
             >
-              {isSubmitting ? "Guardando..." : "Guardar"}
+              {isPending ? "Guardando..." : "Guardar"}
             </Button>
           </div>
         </form>
