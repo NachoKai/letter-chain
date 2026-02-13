@@ -186,7 +186,7 @@ export function GameOver({ gameState, onPlayAgain }: GameOverProps) {
               disabled={isPending}
             />
           </div>
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error ? <p className="text-sm text-destructive">{error}</p> : null}
           <div className="flex gap-3">
             <Button
               type="button"

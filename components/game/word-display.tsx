@@ -1,5 +1,7 @@
 "use client";
 
+import { memo } from "react";
+
 import { LetterTile } from "./letter-tile";
 import { cn } from "@/lib/utils";
 
@@ -9,7 +11,7 @@ interface WordDisplayProps {
   className?: string;
 }
 
-export function WordDisplay({
+export const WordDisplay = memo(function WordDisplay({
   word,
   highlightLast = true,
   className,
@@ -39,4 +41,4 @@ export function WordDisplay({
       ))}
     </div>
   );
-}
+});

@@ -1,6 +1,8 @@
 "use client";
 
+import { lazy, Suspense } from "react";
 import { useGame } from "@/hooks/use-game";
+import { usePrefetchLeaderboard } from "@/hooks/use-game-queries";
 import { Button } from "@/components/ui/button";
 import { HomeProvider } from "@/components/ui/home-provider";
 import { Timer } from "./timer";
@@ -9,7 +11,64 @@ import { WordDisplay } from "./word-display";
 import { WordInput } from "./word-input";
 import { WordHistory } from "./word-history";
 import { GameOver } from "./game-over";
-import { Leaderboard } from "./leaderboard";
+
+const Leaderboard = lazy(() =>
+  import("./leaderboard").then((m) => ({ default: m.Leaderboard }))
+);
+
+function LeaderboardSkeleton({ limit = 10 }: { limit?: number }) {
+  return (
+    <div className="w-full">
+      <h3 className="text-lg font-semibold mb-4 text-center">
+        Tabla de Líderes
+      </h3>
+      <div className="space-y-2">
+        {Array.from({ length: limit }).map((_, i) => (
+          <div
+            key={i}
+            className="flex items-center gap-3 p-3 rounded-lg bg-card border"
+          >
+            <div className="w-8 h-8 rounded-full flex items-center justify-center bg-muted">
+              <div className="w-3 h-3 bg-muted-foreground/30 rounded animate-pulse" />
+            </div>
+            <div className="flex-1 min-w-0 space-y-1.5">
+              <div className="flex items-center gap-2">
+                <div className="w-[1.2em] h-[1.2em] bg-muted/60 rounded-sm animate-pulse" />
+                <div className="h-4 bg-muted/60 rounded animate-pulse w-28" />
+              </div>
+              <div className="h-3 bg-muted/40 rounded animate-pulse w-36" />
+            </div>
+            <div className="h-6 w-16 bg-muted/60 rounded animate-pulse" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const INSTRUCTIONS = (
+  <div className="bg-card border rounded-xl p-6 space-y-4 w-full max-w-sm">
+    <h3 className="font-semibold text-center">Cómo jugar</h3>
+    <ul className="space-y-2 text-sm text-muted-foreground">
+      <li className="flex items-start gap-2">
+        <span className="text-primary font-bold">1.</span>
+        <span>Se te dará una palabra inicial</span>
+      </li>
+      <li className="flex items-start gap-2">
+        <span className="text-primary font-bold">2.</span>
+        <span>Escribe una palabra que empieza con las últimas dos letras</span>
+      </li>
+      <li className="flex items-start gap-2">
+        <span className="text-primary font-bold">3.</span>
+        <span>Tienes 60 segundos para formar la cadena más larga</span>
+      </li>
+      <li className="flex items-start gap-2">
+        <span className="text-primary font-bold">4.</span>
+        <span>Palabras más largas y cadenas más largas dan más puntos</span>
+      </li>
+    </ul>
+  </div>
+);
 
 export function GameBoard() {
   const {
@@ -23,6 +82,7 @@ export function GameBoard() {
     resetGame,
   } = useGame();
 
+  const prefetchLeaderboard = usePrefetchLeaderboard();
   const showHomeButton = gameState.status === "playing";
 
   if (gameState.status === "idle") {
@@ -40,33 +100,7 @@ export function GameBoard() {
               </p>
             </div>
 
-            <div className="bg-card border rounded-xl p-6 space-y-4 w-full max-w-sm">
-              <h3 className="font-semibold text-center">Cómo jugar</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary font-bold">1.</span>
-                  <span>Se te dará una palabra inicial</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary font-bold">2.</span>
-                  <span>
-                    Escribe una palabra que empiece con las últimas dos letras
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary font-bold">3.</span>
-                  <span>
-                    Tienes 60 segundos para formar la cadena más larga
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary font-bold">4.</span>
-                  <span>
-                    Palabras más largas y cadenas más largas dan más puntos
-                  </span>
-                </li>
-              </ul>
-            </div>
+            {INSTRUCTIONS}
 
             <Button
               onClick={startGame}
@@ -77,8 +111,13 @@ export function GameBoard() {
             </Button>
           </div>
 
-          <div className="w-full lg:w-80">
-            <Leaderboard />
+          <div
+            className="w-full lg:w-80"
+            onMouseEnter={() => prefetchLeaderboard(10)}
+          >
+            <Suspense fallback={<LeaderboardSkeleton />}>
+              <Leaderboard />
+            </Suspense>
           </div>
         </div>
       </HomeProvider>
@@ -93,8 +132,13 @@ export function GameBoard() {
           <div className="flex-1">
             <GameOver gameState={gameState} onPlayAgain={resetGame} />
           </div>
-          <div className="w-full lg:w-80">
-            <Leaderboard />
+          <div
+            className="w-full lg:w-80"
+            onMouseEnter={() => prefetchLeaderboard(10)}
+          >
+            <Suspense fallback={<LeaderboardSkeleton />}>
+              <Leaderboard />
+            </Suspense>
           </div>
         </div>
       </HomeProvider>

@@ -3,7 +3,15 @@
 import { useLeaderboardQuery } from "@/hooks/use-game-queries";
 import { cn } from "@/lib/utils";
 import { formatScore } from "@/lib/game/scoring";
-import ReactCountryFlag from "react-country-flag";
+import { lazy, Suspense } from "react";
+
+const ReactCountryFlag = lazy(() =>
+  import("react-country-flag").then((mod) => ({ default: mod.default }))
+);
+
+function CountryFlagFallback() {
+  return <div className="w-[1.2em] h-[1.2em] bg-muted/60 rounded-sm" />;
+}
 
 interface LeaderboardProps {
   className?: string;
@@ -108,15 +116,17 @@ export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   {entry.country_code && (
-                    <ReactCountryFlag
-                      countryCode={entry.country_code}
-                      svg
-                      style={{
-                        width: "1.2em",
-                        height: "1.2em",
-                      }}
-                      title={entry.country_name || entry.country_code}
-                    />
+                    <Suspense fallback={<CountryFlagFallback />}>
+                      <ReactCountryFlag
+                        countryCode={entry.country_code}
+                        svg
+                        style={{
+                          width: "1.2em",
+                          height: "1.2em",
+                        }}
+                        title={entry.country_name || entry.country_code}
+                      />
+                    </Suspense>
                   )}
                   <div className="font-medium truncate">
                     {entry.player_name}

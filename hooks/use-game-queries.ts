@@ -7,20 +7,34 @@ interface LeaderboardResponse {
   entries: LeaderboardEntry[];
 }
 
+async function fetchLeaderboard(limit: number): Promise<LeaderboardResponse> {
+  const response = await fetch(`/api/leaderboard?limit=${limit}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch leaderboard");
+  }
+
+  return (await response.json()) as LeaderboardResponse;
+}
+
 export function useLeaderboardQuery(limit: number = 10) {
   return useQuery<LeaderboardResponse>({
     queryKey: ["leaderboard", limit],
-    queryFn: async () => {
-      const response = await fetch(`/api/leaderboard?limit=${limit}`);
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch leaderboard");
-      }
-
-      return (await response.json()) as LeaderboardResponse;
-    },
+    queryFn: () => fetchLeaderboard(limit),
     refetchInterval: 30000,
+    staleTime: 15000,
   });
+}
+
+export function usePrefetchLeaderboard() {
+  const queryClient = useQueryClient();
+
+  return (limit: number = 10) => {
+    queryClient.prefetchQuery({
+      queryKey: ["leaderboard", limit],
+      queryFn: () => fetchLeaderboard(limit),
+    });
+  };
 }
 
 export function useSubmitScoreMutation() {

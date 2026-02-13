@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import {
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  startTransition,
+} from "react";
 import type { GameState } from "@/lib/game/types";
 import { calculateWordScore } from "@/lib/game/scoring";
 import { getRandomStartingWord, isValidWord } from "@/lib/utils";
@@ -44,6 +50,7 @@ export function useGame() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const wordsSetRef = useRef<Set<string>>(new Set());
 
   const startGame = useCallback(async () => {
     const sessionToken = generateSessionToken();
@@ -96,7 +103,7 @@ export function useGame() {
       return;
     }
 
-    if (gameState.words.includes(word)) {
+    if (wordsSetRef.current.has(word)) {
       setError("Ya usaste esta palabra");
       return;
     }
@@ -109,18 +116,20 @@ export function useGame() {
     const newChainLength = gameState.chainLength + 1;
     const wordScore = calculateWordScore(word, newChainLength);
 
-    setGameState((prev) => ({
-      ...prev,
-      currentWord: word,
-      lastTwoLetters: word.slice(-2).toLowerCase(),
-      words: [...prev.words, word],
-      score: prev.score + wordScore,
-      chainLength: newChainLength,
-      longestChain: Math.max(prev.longestChain, newChainLength),
-    }));
-
     setInputValue("");
     setError(null);
+
+    startTransition(() => {
+      setGameState((prev) => ({
+        ...prev,
+        currentWord: word,
+        lastTwoLetters: word.slice(-2).toLowerCase(),
+        words: [...prev.words, word],
+        score: prev.score + wordScore,
+        chainLength: newChainLength,
+        longestChain: Math.max(prev.longestChain, newChainLength),
+      }));
+    });
   }, [gameState, inputValue, isSubmitting]);
 
   const endGame = useCallback(() => {
@@ -152,13 +161,19 @@ export function useGame() {
   }, []);
 
   useEffect(() => {
+    wordsSetRef.current = new Set(gameState.words);
+  }, [gameState.words]);
+
+  useEffect(() => {
     if (gameState.status === "playing") {
       timerRef.current = setInterval(() => {
-        setGameState((prev) => {
-          if (prev.timeRemaining <= 1) {
-            return { ...prev, status: "finished", timeRemaining: 0 };
-          }
-          return { ...prev, timeRemaining: prev.timeRemaining - 1 };
+        startTransition(() => {
+          setGameState((prev) => {
+            if (prev.timeRemaining <= 1) {
+              return { ...prev, status: "finished", timeRemaining: 0 };
+            }
+            return { ...prev, timeRemaining: prev.timeRemaining - 1 };
+          });
         });
       }, 1000);
     }

@@ -1,5 +1,7 @@
 "use client";
 
+import { memo } from "react";
+
 import { cn } from "@/lib/utils";
 
 interface WordHistoryProps {
@@ -7,21 +9,28 @@ interface WordHistoryProps {
   maxVisible?: number;
 }
 
-export function WordHistory({ words, maxVisible = 10 }: WordHistoryProps) {
+export const WordHistory = memo(function WordHistory({
+  words,
+  maxVisible = 10,
+}: WordHistoryProps) {
+  const wordsLength = words.length;
   const visibleWords = words.slice(-maxVisible);
-  const hasMore = words.length > maxVisible;
+  const hasMore = wordsLength > maxVisible;
 
   return (
     <div className="w-full max-w-md">
       <div className="text-sm text-muted-foreground mb-2 flex items-center justify-between">
         <span>Historial</span>
         {hasMore && (
-          <span className="text-xs">+{words.length - maxVisible} más</span>
+          <span className="text-xs">+{wordsLength - maxVisible} más</span>
         )}
       </div>
-      <div className="flex flex-wrap gap-2 justify-center">
+      <div
+        className="flex flex-wrap gap-2 justify-center"
+        style={{ contentVisibility: "auto" }}
+      >
         {visibleWords.map((word, index) => {
-          const globalIndex = words.length - visibleWords.length + index;
+          const globalIndex = wordsLength - visibleWords.length + index;
           return (
             <div
               key={`${word}-${globalIndex}`}
@@ -39,4 +48,4 @@ export function WordHistory({ words, maxVisible = 10 }: WordHistoryProps) {
       </div>
     </div>
   );
-}
+});

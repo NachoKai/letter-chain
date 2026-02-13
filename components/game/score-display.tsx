@@ -1,5 +1,7 @@
 "use client";
 
+import { memo } from "react";
+
 import { formatScore } from "@/lib/game/scoring";
 
 interface ScoreDisplayProps {
@@ -8,7 +10,7 @@ interface ScoreDisplayProps {
   chainLength: number;
 }
 
-export function ScoreDisplay({
+export const ScoreDisplay = memo(function ScoreDisplay({
   score,
   wordsCount,
   chainLength,
@@ -41,4 +43,4 @@ export function ScoreDisplay({
       </div>
     </div>
   );
-}
+});
