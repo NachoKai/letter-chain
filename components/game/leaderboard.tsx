@@ -17,7 +17,7 @@ export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
     return (
       <div className={cn("w-full", className)}>
         <h3 className="text-lg font-semibold mb-4 text-center">
-          Tabla de Líderes2
+          Tabla de Líderes
         </h3>
         <div className="space-y-2">
           {Array.from({ length: limit }).map((_, i) => (
@@ -62,7 +62,7 @@ export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
   if (error) {
     return (
       <div className={cn("w-full text-center", className)}>
-        <h3 className="text-lg font-semibold mb-4">Tabla de Líderes3</h3>
+        <h3 className="text-lg font-semibold mb-4">Tabla de Líderes</h3>
         <p className="text-muted-foreground text-sm">
           Error al cargar la tabla
         </p>
@@ -75,7 +75,7 @@ export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
   return (
     <div className={cn("w-full", className)}>
       <h3 className="text-lg font-semibold mb-4 text-center">
-        Tabla de Líderes4
+        Tabla de Líderes
       </h3>
       {entries.length === 0 ? (
         <p className="text-muted-foreground text-sm text-center">
