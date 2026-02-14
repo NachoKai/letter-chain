@@ -78,7 +78,6 @@ export function GameBoard() {
     error,
     startGame,
     submitWord,
-    endGame,
     resetGame,
   } = useGame();
 
@@ -172,7 +171,6 @@ export function GameBoard() {
           value={inputValue}
           onChange={setInputValue}
           onSubmit={submitWord}
-          onSurrender={endGame}
           requiredLetter={gameState.lastTwoLetters}
           error={error}
         />

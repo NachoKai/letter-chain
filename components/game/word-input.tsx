@@ -1,8 +1,6 @@
 "use client";
 
-import React from "react";
-
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -11,7 +9,6 @@ interface WordInputProps {
   value: string;
   onChange: (value: string) => void;
   onSubmit: () => void;
-  onSurrender: () => void;
   requiredLetter: string;
   error?: string | null;
   disabled?: boolean;
@@ -21,12 +18,24 @@ export function WordInput({
   value,
   onChange,
   onSubmit,
-  // onSurrender,
   requiredLetter,
   error,
   disabled,
 }: WordInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const displayedValue = useMemo(
+    () =>
+      requiredLetter.length > 0 ? value.substring(requiredLetter.length) : "",
+    [requiredLetter, value]
+  );
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(requiredLetter + e.target.value.toLowerCase());
+    },
+    [requiredLetter, onChange]
+  );
 
   useEffect(() => {
     if (!disabled && inputRef.current) {
@@ -34,12 +43,24 @@ export function WordInput({
     }
   }, [disabled, requiredLetter]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      onSubmit();
-    }
-  };
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        onSubmit();
+      }
+    },
+    [onSubmit]
+  );
+
+  const inputClassName = useMemo(
+    () =>
+      cn(
+        "h-14 text-lg font-mono uppercase touch-manipulation",
+        error && "border-destructive focus-visible:ring-destructive"
+      ),
+    [error]
+  );
 
   return (
     <div className="w-full max-w-md space-y-2">
@@ -50,15 +71,12 @@ export function WordInput({
         <Input
           ref={inputRef}
           type="text"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
+          value={displayedValue}
+          onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder={`Palabra con "${requiredLetter.toUpperCase()}"...`}
           disabled={disabled}
-          className={cn(
-            "h-14 text-lg font-mono uppercase touch-manipulation",
-            error && "border-destructive focus-visible:ring-destructive"
-          )}
+          className={inputClassName}
           autoComplete="off"
           autoCapitalize="off"
           autoCorrect="off"
@@ -68,20 +86,12 @@ export function WordInput({
         />
         <Button
           onClick={onSubmit}
-          disabled={disabled || !value.trim()}
+          disabled={disabled || !displayedValue.trim()}
           className="h-14 px-6 min-w-[80px] touch-manipulation"
           size="lg"
         >
           Enviar
         </Button>
-        {/* <Button
-          onClick={onSurrender}
-          disabled={disabled}
-          variant="outline"
-          className="h-12 px-6"
-        >
-          Rendirse
-        </Button> */}
       </div>
       {error && (
         <p className="text-sm text-destructive text-center animate-shake">
