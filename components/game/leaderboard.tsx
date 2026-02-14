@@ -53,7 +53,7 @@ export function Leaderboard({ className, limit = 10 }: LeaderboardProps) {
 
               <div className="flex-1 min-w-0 space-y-1.5">
                 <div className="flex items-center gap-2">
-                  <div className="w-[1.2em] h-[1.2em] bg-muted/60 rounded-sm animate-pulse" />
+                  <div className="w-[1.4em] h-[1.4em] bg-muted/60 rounded-sm animate-pulse" />
                   <div className="h-4 bg-muted/60 rounded animate-pulse w-28" />
                 </div>
                 <div className="h-3 bg-muted/40 rounded animate-pulse w-36" />
