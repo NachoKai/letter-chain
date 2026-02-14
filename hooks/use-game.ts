@@ -133,7 +133,9 @@ export function useGame() {
     const wordScore = calculateWordScore(word, newChainLength);
     const elapsedMs = Date.now() - gameState.wordStartTime;
     const combo = getComboMultiplier(elapsedMs);
-    const finalWordScore = combo ? wordScore * combo.multiplier : wordScore;
+    const finalWordScore = combo
+      ? Math.round(wordScore * combo.multiplier)
+      : wordScore;
 
     setInputValue("");
     setError(null);
