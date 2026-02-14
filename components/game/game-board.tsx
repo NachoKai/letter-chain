@@ -64,7 +64,10 @@ const INSTRUCTIONS = (
       </li>
       <li className="flex items-start gap-2">
         <span className="text-primary font-bold">4.</span>
-        <span>Palabras más largas y cadenas más largas dan más puntos</span>
+        <span>
+          Palabras largas, cadenas largas y responder rápido (combos) dan más
+          puntos
+        </span>
       </li>
     </ul>
   </div>
