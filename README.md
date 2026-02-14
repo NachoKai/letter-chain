@@ -1,162 +1,110 @@
 # LetterChain
 
-A fast-paced word game where you create chains of words in Spanish. Each word must start with the last two letters of the previous word. How long can you keep the chain going?
+LetterChain is a fast-paced word-chain game. Each new word must start with the last two letters of the previous word.
 
-## 🎮 How to Play
+## How to Play
 
-1. **Start with a word** - You'll be given an initial Spanish word
-2. **Continue the chain** - Type a word that starts with the last two letters of the previous word
-3. **Race against time** - You have 60 seconds to build the longest chain possible
-4. **Score points** - Longer words and longer chains earn more points
+1. Start a game and receive an initial word.
+2. Enter a new word that starts with the previous word's last two letters.
+3. Continue the chain for 60 seconds.
+4. Submit your score to the leaderboard.
 
-### Scoring System
+## Scoring
 
-- **Base points**: 10 points per valid word
-- **Length bonus**: +2 points for each character over 3 letters
-- **Chain bonus**: +5 points for each consecutive word in your chain
-- **Speed bonus**: Bonus points for playing quickly in the first half of the game
+Per submitted word during gameplay:
 
-## 🚀 Features
+- Base points: `10`
+- Length bonus: `+2` per character over 3
+- Chain bonus: `+5 * currentChainLength`
+- Speed combo multiplier (based on submit speed):
+  - `<1s: x3`, `<2s: x2`, `<3s: x1.5`, `<4s: x1.25`, `<5s: x1.1`
 
-- **Real-time gameplay** with 60-second timer
-- **Spanish dictionary validation** - only valid Spanish words are accepted
-- **Leaderboard system** to compete with other players
-- **Responsive design** - works on desktop and mobile devices
-- **Dark/Light theme** support
-- **Score tracking** with detailed statistics
+Current implementation detail:
 
-## 🛠️ Tech Stack
+- The initial starting word is currently scored as a flat `10` points.
+- `calculateTimeBonus()` exists in code but is not currently applied to the game score.
+- Server-side score validation does not fully account for combo multipliers (see `docs/game-logic.md`).
 
-- **Frontend**: Next.js 16, React 19, TypeScript
-- **Styling**: Tailwind CSS, shadcn/ui components
-- **Database**: Supabase (PostgreSQL)
-- **UI Components**: Radix UI primitives
-- **State Management**: React hooks, SWR for data fetching
+## Game Logic Documentation
 
-## 📦 Installation
+Detailed logic, validation flow, anti-cheat checks, and data model are documented in:
 
-1. Clone the repository:
+- `docs/game-logic.md`
 
-   ```bash
-   git clone <repository-url>
-   cd letter-chain
-   ```
+## Tech Stack
 
-2. Install dependencies:
+- Next.js 16 + React 19 + TypeScript
+- Tailwind CSS + shadcn/ui + Radix UI
+- Supabase (PostgreSQL)
+- TanStack React Query (leaderboard fetch + score submission)
 
-   ```bash
-   pnpm install
-   ```
+## Getting Started
 
-3. Set up environment variables:
+1. Install dependencies:
 
-   ```bash
-   cp .env.example .env.local
-   ```
-
-   Fill in your Supabase credentials in `.env.local`
-
-4. Run the development server:
-
-   ```bash
-   pnpm run dev
-   ```
-
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## 🗄️ Database Setup
-
-The app uses Supabase for backend services. You'll need to:
-
-1. Create a new Supabase project
-2. Set up the following tables:
-   - `game_sessions` - stores individual game sessions
-   - `leaderboard` - stores high scores and player rankings
-3. Configure environment variables with your Supabase URL and anon key
-
-## 📂 Project Structure
-
-```
-letter-chain/
-├── app/                    # Next.js app router
-│   ├── api/               # API routes
-│   │   ├── game/          # Game-related endpoints
-│   │   └── leaderboard/  # Leaderboard endpoints
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout
-│   └── page.tsx           # Home page
-├── components/
-│   ├── game/              # Game-specific components
-│   └── ui/                # Reusable UI components (shadcn/ui)
-├── lib/
-│   ├── dictionary/        # Word dictionaries
-│   ├── game/              # Game logic and types
-│   ├── supabase/          # Database client setup
-│   └── utils.ts           # Utility functions
-├── hooks/                 # Custom React hooks
-└── public/                # Static assets
+```bash
+pnpm install
 ```
 
-## 🎯 Game Components
+2. Create local environment file:
 
-- **GameBoard**: Main game interface with different states
-- **Timer**: Countdown timer display
-- **WordInput**: Input field with validation
-- **ScoreDisplay**: Real-time score and statistics
-- **Leaderboard**: High scores display
-- **WordHistory**: Visual representation of your word chain
+```bash
+cp .env.local.example .env.local
+```
 
-## 🧩 Game Logic
+3. Fill in Supabase credentials in `.env.local`:
 
-The game uses a unique "last two letters" mechanic where each word must start with the final two letters of the previous word, making it more challenging than traditional word chain games. The scoring algorithm rewards:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
-- Longer words (encouraging vocabulary expansion)
-- Longer chains (rewarding continuity)
-- Quick thinking (speed bonus in early game)
+4. Start development server:
 
-## 🔧 Development
+```bash
+pnpm dev
+```
 
-### Available Scripts
+5. Open `http://localhost:3000`
 
-- `pnpm run dev` - Start development server
-- `pnpm run build` - Build for production
-- `pnpm run start` - Start production server
-- `pnpm run lint` - Run ESLint
-- `pnpm run lint:fix` - Fix linting issues
-- `pnpm run format` - Format code with Prettier
-- `pnpm run format:check` - Check code formatting
+## Database
 
-### Code Quality
+Run SQL scripts in `scripts/` against your Supabase project:
 
-The project uses:
+1. `scripts/001_create_letterchain_tables.sql`
+2. `scripts/002_add_country_columns.sql`
+3. `scripts/004_enhance_security_policies.sql`
+4. `scripts/005_add_ip_tracking.sql`
 
-- **ESLint** for code linting
-- **Prettier** for code formatting
-- **Husky** for git hooks
-- **lint-staged** for pre-commit checks
+Optional/legacy helper:
 
-## 🌐 Deployment
+- `scripts/fix_game_sessions_rls.sql`
 
-This app is designed to be deployed on Vercel (recommended for Next.js apps) or any platform that supports Node.js.
+## Available Scripts
 
-## 📱 Mobile Support
+- `pnpm dev`
+- `pnpm build`
+- `pnpm start`
+- `pnpm lint`
+- `pnpm lint:fix`
+- `pnpm format`
+- `pnpm format:check`
 
-The game is fully responsive and works great on mobile devices. Touch controls are optimized for the best mobile gaming experience.
+## Project Structure
 
-## 🏆 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🎮 Play Now
-
-Ready to test your Spanish vocabulary skills? Start building your word chain and see how high you can score!
-
-Made with ❤️ using Next.js and Tailwind CSS
+```text
+app/
+  api/
+    game/
+      start/route.ts
+      submit/route.ts
+    leaderboard/route.ts
+components/
+  game/
+hooks/
+lib/
+  game/
+  dictionary/
+  supabase/
+scripts/
+docs/
+  game-logic.md
+```

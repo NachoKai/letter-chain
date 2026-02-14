@@ -8,6 +8,11 @@ export interface GameState {
   chainLength: number;
   longestChain: number;
   sessionToken: string | null;
+  wordStartTime: number;
+  combo: {
+    multiplier: number;
+    label: string;
+  } | null;
 }
 
 export interface LeaderboardEntry {

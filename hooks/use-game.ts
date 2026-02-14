@@ -13,6 +13,18 @@ import { getRandomStartingWord, isValidWord } from "@/lib/utils";
 
 const GAME_DURATION = 60; // 60 seconds
 
+function getComboMultiplier(
+  elapsedMs: number
+): { multiplier: number; label: string } | null {
+  if (elapsedMs < 1000) return { multiplier: 3, label: "x3" };
+  if (elapsedMs < 2000) return { multiplier: 2, label: "x2" };
+  if (elapsedMs < 3000) return { multiplier: 1.5, label: "x1.5" };
+  if (elapsedMs < 4000) return { multiplier: 1.25, label: "x1.25" };
+  if (elapsedMs < 5000) return { multiplier: 1.1, label: "x1.1" };
+
+  return null;
+}
+
 function generateSessionToken(): string {
   if (
     typeof window !== "undefined" &&
@@ -44,6 +56,8 @@ export function useGame() {
     chainLength: 0,
     longestChain: 0,
     sessionToken: null,
+    wordStartTime: 0,
+    combo: null,
   });
 
   const [inputValue, setInputValue] = useState("");
@@ -76,6 +90,8 @@ export function useGame() {
       chainLength: 1,
       longestChain: 1,
       sessionToken,
+      wordStartTime: Date.now(),
+      combo: null,
     });
     setInputValue("");
     setError(null);
@@ -115,6 +131,9 @@ export function useGame() {
 
     const newChainLength = gameState.chainLength + 1;
     const wordScore = calculateWordScore(word, newChainLength);
+    const elapsedMs = Date.now() - gameState.wordStartTime;
+    const combo = getComboMultiplier(elapsedMs);
+    const finalWordScore = combo ? wordScore * combo.multiplier : wordScore;
 
     setInputValue("");
     setError(null);
@@ -125,9 +144,11 @@ export function useGame() {
         currentWord: word,
         lastTwoLetters: word.slice(-2).toLowerCase(),
         words: [...prev.words, word],
-        score: prev.score + wordScore,
+        score: prev.score + finalWordScore,
         chainLength: newChainLength,
         longestChain: Math.max(prev.longestChain, newChainLength),
+        wordStartTime: Date.now(),
+        combo,
       }));
     });
   }, [gameState, inputValue, isSubmitting]);
@@ -155,6 +176,8 @@ export function useGame() {
       chainLength: 0,
       longestChain: 0,
       sessionToken: null,
+      wordStartTime: 0,
+      combo: null,
     });
     setInputValue("");
     setError(null);

@@ -154,6 +154,7 @@ export function GameBoard() {
           score={gameState.score}
           wordsCount={gameState.words.length}
           chainLength={gameState.chainLength}
+          combo={gameState.combo}
         />
 
         <div className="py-4 w-full">
