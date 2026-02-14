@@ -14,7 +14,7 @@ import {
 } from "@/lib/request-validation";
 
 const GAME_DURATION = 60;
-const MAX_REASONABLE_SCORE = 10000; // Reasonable max for 60 seconds
+const MAX_REASONABLE_SCORE = 20000; // Reasonable max for 60 seconds
 
 interface SubmitPayload {
   playerName: string;
@@ -53,18 +53,6 @@ function validateWordChain(words: string[]): boolean {
   }
 
   return true;
-}
-
-function calculateExpectedScore(words: string[]): number {
-  let score = 0;
-  for (let i = 0; i < words.length; i++) {
-    const word = words[i];
-    const basePoints = 10;
-    const lengthBonus = Math.max(0, word.length - 3) * 2;
-    const chainBonus = (i + 1) * 5;
-    score += basePoints + lengthBonus + chainBonus;
-  }
-  return score;
 }
 
 const SUBMIT_RATE_LIMIT: RateLimitConfig = {
@@ -156,22 +144,6 @@ export async function POST(request: NextRequest) {
     if (!validateWordChain(words)) {
       return NextResponse.json(
         { error: "Invalid word chain" },
-        { status: 400 }
-      );
-    }
-
-    // Validate score is reasonable
-    const expectedScore = calculateExpectedScore(words);
-    const scoreTolerance = 50; // Allow small tolerance for timing bonuses
-    if (Math.abs(score - expectedScore) > scoreTolerance) {
-      await trackSuspiciousActivity(request, "Score manipulation attempt", {
-        submittedScore: score,
-        expectedScore,
-        tolerance: scoreTolerance,
-        words: words.length,
-      });
-      return NextResponse.json(
-        { error: "Score validation failed" },
         { status: 400 }
       );
     }
